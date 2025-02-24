@@ -5,8 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e4f4a455-559c-4b95-b8e9-94ee53a45fa6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/feature_engineering.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fundamental_fetch.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/model_evalution.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/model_training_XGBoost.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_structure.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sets_creation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_fetch.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_fetch.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +30,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -36,14 +46,26 @@
   "keyToString": {
     "Python.data_fetch.executor": "Run",
     "Python.data_fetch_v2.executor": "Run",
+    "Python.feature_engineering.executor": "Run",
+    "Python.fundamental_fetch.executor": "Run",
+    "Python.model_evalution.executor": "Run",
+    "Python.model_training_LR.executor": "Run",
+    "Python.model_training_XGBoost.executor": "Run",
+    "Python.sets_creation.executor": "Run",
     "Python.test_yfinance.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
+    "last_opened_file_path": "E:/nauka/ML/Momentum_Trading_Recommender",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\nauka\ML\Momentum_Trading_Recommender" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>

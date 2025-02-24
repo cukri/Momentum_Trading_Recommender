@@ -1,0 +1,9 @@
+stock_analysis/
+│── data_fetcher.py        # Downloading technical data
+│── fundamental_fetcher.py  # Downloading fundamental data. Maybe in next version of project. Skipping it for now
+│── feature_engineering.py  # Preparing data for model
+│── sets_creation.py  # Preparing training/test sets for models
+│── model_training_XXX.py       # Training models
+│── model_evaluation.py # Evaluating results of created models.
+│── recommendation_engine.py # Recommendations generation
+│── main.py                 # Main program

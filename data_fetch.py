@@ -43,7 +43,7 @@ def get_all_tickers():
     return all_tickers
 
 
-def get_fmp_data(ticker, start="2024-01-01", end="2024-12-31"):
+def get_fmp_data(ticker, start="2016-01-01", end="2024-12-31"):
     """Downloading data about stocks from FinancialModelingPrep."""
     url = f"{BASE_URL}{ticker}?from={start}&to={end}&apikey={API_KEY}"
     response = requests.get(url)
@@ -122,7 +122,7 @@ def calculate_technical_indicators(df):
     return df
 
 
-def save_data_to_csv(all_data, filename="stocks_data.csv"):
+def save_data_to_csv(all_data, filename="stocks_data_long.csv"):
     """Saves collected data to a CSV file."""
     if all_data:
         combined_df = pd.concat(all_data)
@@ -132,26 +132,25 @@ def save_data_to_csv(all_data, filename="stocks_data.csv"):
         print("No data to save.")
 
 
-# Download all tickers from NASDAQ and S&P 500
-tickers = get_all_tickers()
+if __name__ == "__main__":
+    tickers = get_all_tickers()
 
-if tickers:
+    if tickers:
+        all_data = []
 
-    all_data = []
+        for ticker in tickers:
+            print(f"Getting data for {ticker}...")
+            df = get_fmp_data(ticker)
 
-    for ticker in tickers:
-        print(f"Getting data for {ticker}...")
-        df = get_fmp_data(ticker)
+            if df is not None:
+                df['close'] = df['close'].dropna()
+                df = calculate_technical_indicators(df)
+                all_data.append(df)
+                print(f"Metrics for {ticker} downloaded and calculated.")
+            else:
+                print(f"No data for {ticker}.")
+            print("-")
 
-        if df is not None:
-            # Calculation of technical indicators
-            df = calculate_technical_indicators(df)
-            all_data.append(df)
-            print(f"Metrics for {ticker} downloaded and calculated.")
-        else:
-            print(f"No data for {ticker}.")
-        print("-")
-
-    save_data_to_csv(all_data)
-else:
-    print("No tickers available.")
+        save_data_to_csv(all_data)
+    else:
+        print("No tickers available.")
