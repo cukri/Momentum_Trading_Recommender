@@ -43,7 +43,7 @@ def get_all_tickers():
     return all_tickers
 
 
-def get_fmp_data(ticker, start="2016-01-01", end="2024-12-31"):
+def get_fmp_data(ticker, start="2016-01-01", end="2016-12-31"):
     """Downloading data about stocks from FinancialModelingPrep."""
     url = f"{BASE_URL}{ticker}?from={start}&to={end}&apikey={API_KEY}"
     response = requests.get(url)
@@ -122,7 +122,7 @@ def calculate_technical_indicators(df):
     return df
 
 
-def save_data_to_csv(all_data, filename="stocks_data_long.csv"):
+def save_data_to_csv(all_data, filename="stocks_data_2016.csv"):
     """Saves collected data to a CSV file."""
     if all_data:
         combined_df = pd.concat(all_data)

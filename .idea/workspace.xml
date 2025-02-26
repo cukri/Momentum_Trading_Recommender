@@ -5,15 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e4f4a455-559c-4b95-b8e9-94ee53a45fa6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/feature_engineering.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fundamental_fetch.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/model_evalution.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/model_training_XGBoost.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project_structure.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sets_creation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data_fetch_chosen_GPW.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_fetch.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_fetch.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_fetch_yf.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_fetch_yf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project_structure.txt" beforeDir="false" afterPath="$PROJECT_DIR$/project_structure.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,29 +39,61 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.data_fetch.executor": "Run",
-    "Python.data_fetch_v2.executor": "Run",
-    "Python.feature_engineering.executor": "Run",
-    "Python.fundamental_fetch.executor": "Run",
-    "Python.model_evalution.executor": "Run",
-    "Python.model_training_LR.executor": "Run",
-    "Python.model_training_XGBoost.executor": "Run",
-    "Python.sets_creation.executor": "Run",
-    "Python.test_yfinance.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "E:/nauka/ML/Momentum_Trading_Recommender",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.data_fetch.executor&quot;: &quot;Run&quot;,
+    &quot;Python.data_fetch_GPW.executor&quot;: &quot;Run&quot;,
+    &quot;Python.data_fetch_chosen_GPW.executor&quot;: &quot;Run&quot;,
+    &quot;Python.data_fetch_v2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.data_fetch_yf.executor&quot;: &quot;Run&quot;,
+    &quot;Python.feature_engineering.executor&quot;: &quot;Run&quot;,
+    &quot;Python.fundamental_fetch.executor&quot;: &quot;Run&quot;,
+    &quot;Python.model_evalution.executor&quot;: &quot;Run&quot;,
+    &quot;Python.model_training_LR.executor&quot;: &quot;Run&quot;,
+    &quot;Python.model_training_XGBoost.executor&quot;: &quot;Run&quot;,
+    &quot;Python.sets_creation.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test_yfinance.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/nauka/ML/Momentum_Trading_Recommender&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\nauka\ML\Momentum_Trading_Recommender" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="model_training_LR" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Momentum_Trading_Recommender" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/model_training_LR.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.model_training_LR" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -90,7 +119,15 @@
       <option name="project" value="LOCAL" />
       <updated>1739923224623</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Many changes in structure and execution of project:&#10;1.Splitting dataset for training/test is now done in separate module.&#10;2. I created two models, Linear_Regression and XGBoost.&#10;3. I added module for evaluating results of created models.&#10;4. When trying to download data from 2016 I reached API quota limit. I will need to download the data in batches and combine them into one.">
+      <option name="closed" value="true" />
+      <created>1740433244099</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1740433244099</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -106,6 +143,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="First version of downloading data from SP500 and NASDAQ." />
-    <option name="LAST_COMMIT_MESSAGE" value="First version of downloading data from SP500 and NASDAQ." />
+    <MESSAGE value="Many changes in structure and execution of project:&#10;1.Splitting dataset for training/test is now done in separate module.&#10;2. I created two models, Linear_Regression and XGBoost.&#10;3. I added module for evaluating results of created models.&#10;4. When trying to download data from 2016 I reached API quota limit. I will need to download the data in batches and combine them into one." />
+    <option name="LAST_COMMIT_MESSAGE" value="Many changes in structure and execution of project:&#10;1.Splitting dataset for training/test is now done in separate module.&#10;2. I created two models, Linear_Regression and XGBoost.&#10;3. I added module for evaluating results of created models.&#10;4. When trying to download data from 2016 I reached API quota limit. I will need to download the data in batches and combine them into one." />
   </component>
 </project>
