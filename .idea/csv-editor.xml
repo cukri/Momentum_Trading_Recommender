@@ -17,21 +17,7 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\gpw_data.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\processed_stocks_data.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\selected_gpw_data.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

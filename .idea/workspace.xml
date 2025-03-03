@@ -5,12 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e4f4a455-559c-4b95-b8e9-94ee53a45fa6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/data_fetch_chosen_GPW.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/model_training_CNN.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/model_training_GRU.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/recommendation_engine.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_fetch.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_fetch.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_fetch_yf.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_fetch_yf.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_structure.txt" beforeDir="false" afterPath="$PROJECT_DIR$/project_structure.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +48,7 @@
     &quot;Python.feature_engineering.executor&quot;: &quot;Run&quot;,
     &quot;Python.fundamental_fetch.executor&quot;: &quot;Run&quot;,
     &quot;Python.model_evalution.executor&quot;: &quot;Run&quot;,
+    &quot;Python.model_training_GRU.executor&quot;: &quot;Run&quot;,
     &quot;Python.model_training_LR.executor&quot;: &quot;Run&quot;,
     &quot;Python.model_training_XGBoost.executor&quot;: &quot;Run&quot;,
     &quot;Python.sets_creation.executor&quot;: &quot;Run&quot;,
