@@ -1,12 +1,10 @@
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
-
 def clean_data(df):
     """Removing missing values."""
     df = df.dropna()
     return df
-
 
 def check_missing_values(df):
     """Check for any missing values in the dataframe."""

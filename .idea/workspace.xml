@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e4f4a455-559c-4b95-b8e9-94ee53a45fa6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/model_training_CNN.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/model_training_GRU.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/recommendation_engine.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/recommendation_engine_FMP.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/feature_engineering.py" beforeDir="false" afterPath="$PROJECT_DIR$/feature_engineering.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendation_engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation_engine.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,6 +51,8 @@
     &quot;Python.model_training_GRU.executor&quot;: &quot;Run&quot;,
     &quot;Python.model_training_LR.executor&quot;: &quot;Run&quot;,
     &quot;Python.model_training_XGBoost.executor&quot;: &quot;Run&quot;,
+    &quot;Python.recommendation_engine.executor&quot;: &quot;Run&quot;,
+    &quot;Python.recommendation_engine_FMP.executor&quot;: &quot;Run&quot;,
     &quot;Python.sets_creation.executor&quot;: &quot;Run&quot;,
     &quot;Python.test_yfinance.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
@@ -127,7 +129,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740433244099</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="New not working models right now with recommednation engine.">
+      <option name="closed" value="true" />
+      <created>1741032501636</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1741032501636</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -144,6 +154,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="First version of downloading data from SP500 and NASDAQ." />
     <MESSAGE value="Many changes in structure and execution of project:&#10;1.Splitting dataset for training/test is now done in separate module.&#10;2. I created two models, Linear_Regression and XGBoost.&#10;3. I added module for evaluating results of created models.&#10;4. When trying to download data from 2016 I reached API quota limit. I will need to download the data in batches and combine them into one." />
-    <option name="LAST_COMMIT_MESSAGE" value="Many changes in structure and execution of project:&#10;1.Splitting dataset for training/test is now done in separate module.&#10;2. I created two models, Linear_Regression and XGBoost.&#10;3. I added module for evaluating results of created models.&#10;4. When trying to download data from 2016 I reached API quota limit. I will need to download the data in batches and combine them into one." />
+    <MESSAGE value="New not working models right now with recommednation engine." />
+    <option name="LAST_COMMIT_MESSAGE" value="New not working models right now with recommednation engine." />
   </component>
 </project>

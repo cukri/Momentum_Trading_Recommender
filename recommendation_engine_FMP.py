@@ -1,8 +1,11 @@
 import pandas as pd
 import numpy as np
 import pickle
-import yfinance as yf
+import requests
 from datetime import datetime
+
+API_KEY = "oIlfUS3C0X2DGhm3Lh0CA71GqWbmnMSc"
+BASE_URL = "https://financialmodelingprep.com/api/v3/historical-price-full/"
 
 
 def load_model(model_path):
@@ -21,27 +24,38 @@ def load_tickers_from_csv(csv_path):
 def fetch_today_features(tickers):
     """Pobiera dane techniczne dla dzisiejszego dnia."""
     features = []
+    today = datetime.today().strftime('%Y-%m-%d')
+
     for ticker in tickers:
-        stock_data = yf.download(ticker, period='1d')
-        if stock_data.empty:
+        url = f"{BASE_URL}{ticker}?from={today}&to={today}&apikey={API_KEY}"
+        response = requests.get(url)
+
+        if response.status_code != 200:
+            print(f"Błąd pobierania danych dla {ticker}: {response.status_code}")
+            continue
+
+        data = response.json()
+        if "historical" not in data or not data["historical"]:
             print(f"Brak danych dla {ticker}")
             continue
 
+        stock_data = data["historical"][0]
         row = {
             'Ticker': ticker,
-            'Close': stock_data['Close'].iloc[-1],
-            'Volume': stock_data['Volume'].iloc[-1],
-            'ROC_30': (stock_data['Close'].pct_change(30).iloc[-1]) if len(stock_data) > 30 else np.nan,
-            'ROC_90': (stock_data['Close'].pct_change(90).iloc[-1]) if len(stock_data) > 90 else np.nan,
-            'ROC_120': (stock_data['Close'].pct_change(120).iloc[-1]) if len(stock_data) > 120 else np.nan,
-            'ROC_180': (stock_data['Close'].pct_change(180).iloc[-1]) if len(stock_data) > 180 else np.nan
+            'Close': stock_data['close'],
+            'Volume': stock_data['volume'],
+            'ROC_30': np.nan,  # Te wartości wymagają dłuższego okresu danych
+            'ROC_90': np.nan,
+            'ROC_120': np.nan,
+            'ROC_180': np.nan
         }
         features.append(row)
-    df = pd.DataFrame(features).dropna()
+        print(f"Pobrano dane dla {ticker}.")
+
+    df = pd.DataFrame(features)
 
     # Zapisanie danych do pliku CSV
-    today_str = datetime.today().strftime('%Y-%m-%d')
-    filename = f"processed_stocks_{today_str}.csv"
+    filename = f"processed_stocks_{today}.csv"
     df.to_csv(filename, index=False)
     print(f"Dane zapisano do pliku: {filename}")
 
@@ -60,7 +74,7 @@ def generate_recommendations(predictions, tickers, top_n=5):
         'Predicted_Return': predictions
     })
 
-    # Sortujemy po najwyższych przewidywanych zwrotach
+    # Sortowanie po najwyższych przewidywanych zwrotach
     recommendations = recommendations.sort_values(by='Predicted_Return', ascending=False)
 
     return recommendations.head(top_n)
