@@ -5,11 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e4f4a455-559c-4b95-b8e9-94ee53a45fa6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/recommendation_engine_FMP.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/feature_engineering.py" beforeDir="false" afterPath="$PROJECT_DIR$/feature_engineering.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recommendation_engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation_engine.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_fetch.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_fetch.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,31 +37,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.data_fetch.executor&quot;: &quot;Run&quot;,
-    &quot;Python.data_fetch_GPW.executor&quot;: &quot;Run&quot;,
-    &quot;Python.data_fetch_chosen_GPW.executor&quot;: &quot;Run&quot;,
-    &quot;Python.data_fetch_v2.executor&quot;: &quot;Run&quot;,
-    &quot;Python.data_fetch_yf.executor&quot;: &quot;Run&quot;,
-    &quot;Python.feature_engineering.executor&quot;: &quot;Run&quot;,
-    &quot;Python.fundamental_fetch.executor&quot;: &quot;Run&quot;,
-    &quot;Python.model_evalution.executor&quot;: &quot;Run&quot;,
-    &quot;Python.model_training_GRU.executor&quot;: &quot;Run&quot;,
-    &quot;Python.model_training_LR.executor&quot;: &quot;Run&quot;,
-    &quot;Python.model_training_XGBoost.executor&quot;: &quot;Run&quot;,
-    &quot;Python.recommendation_engine.executor&quot;: &quot;Run&quot;,
-    &quot;Python.recommendation_engine_FMP.executor&quot;: &quot;Run&quot;,
-    &quot;Python.sets_creation.executor&quot;: &quot;Run&quot;,
-    &quot;Python.test_yfinance.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/nauka/ML/Momentum_Trading_Recommender&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.data_fetch.executor": "Run",
+    "Python.data_fetch_GPW.executor": "Run",
+    "Python.data_fetch_chosen_GPW.executor": "Run",
+    "Python.data_fetch_v2.executor": "Run",
+    "Python.data_fetch_yf.executor": "Run",
+    "Python.feature_engineering.executor": "Run",
+    "Python.fundamental_fetch.executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.model_evalution.executor": "Run",
+    "Python.model_training_GRU.executor": "Run",
+    "Python.model_training_LR.executor": "Run",
+    "Python.model_training_XGBoost.executor": "Run",
+    "Python.recommendation_engine.executor": "Run",
+    "Python.recommendation_engine_FMP.executor": "Run",
+    "Python.sets_creation.executor": "Run",
+    "Python.test_yfinance.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "E:/nauka/ML/Momentum_Trading_Recommender",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\nauka\ML\Momentum_Trading_Recommender" />
@@ -137,7 +137,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741032501636</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Working on recommendation.">
+      <option name="closed" value="true" />
+      <created>1742254217919</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1742254217919</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -155,6 +163,7 @@
     <MESSAGE value="First version of downloading data from SP500 and NASDAQ." />
     <MESSAGE value="Many changes in structure and execution of project:&#10;1.Splitting dataset for training/test is now done in separate module.&#10;2. I created two models, Linear_Regression and XGBoost.&#10;3. I added module for evaluating results of created models.&#10;4. When trying to download data from 2016 I reached API quota limit. I will need to download the data in batches and combine them into one." />
     <MESSAGE value="New not working models right now with recommednation engine." />
-    <option name="LAST_COMMIT_MESSAGE" value="New not working models right now with recommednation engine." />
+    <MESSAGE value="Working on recommendation." />
+    <option name="LAST_COMMIT_MESSAGE" value="Working on recommendation." />
   </component>
 </project>

@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 import pandas_ta as ta
+import datetime
 
 API_KEY = "oIlfUS3C0X2DGhm3Lh0CA71GqWbmnMSc"
 BASE_URL = "https://financialmodelingprep.com/api/v3/historical-price-full/"
@@ -43,8 +44,12 @@ def get_all_tickers():
     return all_tickers
 
 
-def get_fmp_data(ticker, start="2016-01-01", end="2016-12-31"):
-    """Downloading data about stocks from FinancialModelingPrep."""
+def get_fmp_data(ticker, start=None, end=None):
+    """Downloading stock data from FinancialModelingPrep."""
+    if start is None or end is None:
+        today = datetime.today().strftime('%Y-%m-%d')
+        start = end = today  # Pobieranie danych tylko z dzisiaj
+
     url = f"{BASE_URL}{ticker}?from={start}&to={end}&apikey={API_KEY}"
     response = requests.get(url)
 
@@ -54,15 +59,14 @@ def get_fmp_data(ticker, start="2016-01-01", end="2016-12-31"):
             df = pd.DataFrame(data["historical"])
             df = df[["date", "open", "high", "low", "close", "volume"]]
             df["Ticker"] = ticker
-            print(f"Data downloaded for {ticker}.")
+            print(f"Data downloaded for {ticker} from {start} to {end}.")
             return df
         else:
-            print(f"No data for {ticker} – it is possible that FinancialModelingPrep does not support this ticker.")
+            print(f"No data for {ticker}. It may not be supported by FinancialModelingPrep.")
             return None
     else:
         print(f"Error downloading data for {ticker}: {response.status_code}")
         return None
-
 
 def calculate_technical_indicators(df):
     # Minimum data lengths for each indicator
@@ -132,25 +136,35 @@ def save_data_to_csv(all_data, filename="stocks_data_2016.csv"):
         print("No data to save.")
 
 
-if __name__ == "__main__":
-    tickers = get_all_tickers()
+def run_data_collection():
+    tickers = input("Enter tickers separated by commas (or leave empty for default NASDAQ & S&P 500 list): ").strip()
+    tickers = tickers.split(',') if tickers else get_all_tickers()
 
-    if tickers:
-        all_data = []
+    date_choice = input("Do you want data only from today? (Y/N): ").strip().upper()
+    if date_choice == 'Y':
+        start_date = end_date = None  # Pobieranie dzisiejszych danych
+    else:
+        start_date = input("Enter start date (YYYY-MM-DD): ").strip()
+        end_date = input("Enter end date (YYYY-MM-DD): ").strip()
 
-        for ticker in tickers:
-            print(f"Getting data for {ticker}...")
-            df = get_fmp_data(ticker)
+    all_data = []
+    for ticker in tickers:
+        print(f"Getting data for {ticker}...")
+        df = get_fmp_data(ticker, start=start_date, end=end_date)
+        if df is not None:
+            df = calculate_technical_indicators(df)
+            all_data.append(df)
+            print(f"Metrics for {ticker} downloaded and calculated.")
+        else:
+            print(f"No data for {ticker}.")
+        print("-")
 
-            if df is not None:
-                df['close'] = df['close'].dropna()
-                df = calculate_technical_indicators(df)
-                all_data.append(df)
-                print(f"Metrics for {ticker} downloaded and calculated.")
-            else:
-                print(f"No data for {ticker}.")
-            print("-")
-
+    if all_data:
         save_data_to_csv(all_data)
     else:
-        print("No tickers available.")
+        print("No data to save.")
+
+
+if __name__ == "__main__":
+    run_data_collection()
+

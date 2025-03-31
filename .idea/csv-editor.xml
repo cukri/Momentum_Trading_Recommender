@@ -24,6 +24,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\processed_stocks_2025-03-18.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\processed_stocks_data.csv">
           <value>
             <Attribute>
