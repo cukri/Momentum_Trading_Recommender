@@ -59,6 +59,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\stocks_data_2016.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\stocks_data_gpw.csv">
           <value>
             <Attribute>

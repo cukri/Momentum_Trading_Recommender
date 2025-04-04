@@ -126,7 +126,7 @@ def calculate_technical_indicators(df):
     return df
 
 
-def save_data_to_csv(all_data, filename="stocks_data_2016.csv"):
+def save_data_to_csv(all_data, filename="stocks_data.csv"):
     """Saves collected data to a CSV file."""
     if all_data:
         combined_df = pd.concat(all_data)

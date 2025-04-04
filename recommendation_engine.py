@@ -1,56 +1,36 @@
 import pandas as pd
-import numpy as np
 import pickle
-import yfinance as yf
-from datetime import datetime
-
 
 def load_model(model_path):
     """Wczytuje zapisany model ML z pliku."""
-    with open(model_path, 'rb') as f:
-        model = pickle.load(f)
-    return model
-
-
-def load_tickers_from_csv(csv_path):
-    """Wczytuje listę tickerów z pliku CSV."""
-    df = pd.read_csv(csv_path)
-    return df['Ticker'].unique().tolist()
-
-
-def fetch_today_features(tickers):
-    """Pobiera dane techniczne dla dzisiejszego dnia."""
-    features = []
-    for ticker in tickers:
-        stock_data = yf.download(ticker, period='1d')
-        if stock_data.empty:
-            print(f"Brak danych dla {ticker}")
-            continue
-
-        row = {
-            'Ticker': ticker,
-            'Close': stock_data['Close'].iloc[-1],
-            'Volume': stock_data['Volume'].iloc[-1],
-            'ROC_30': (stock_data['Close'].pct_change(30).iloc[-1]) if len(stock_data) > 30 else np.nan,
-            'ROC_90': (stock_data['Close'].pct_change(90).iloc[-1]) if len(stock_data) > 90 else np.nan,
-            'ROC_120': (stock_data['Close'].pct_change(120).iloc[-1]) if len(stock_data) > 120 else np.nan,
-            'ROC_180': (stock_data['Close'].pct_change(180).iloc[-1]) if len(stock_data) > 180 else np.nan
-        }
-        features.append(row)
-    df = pd.DataFrame(features).dropna()
-
-    # Zapisanie danych do pliku CSV
-    today_str = datetime.today().strftime('%Y-%m-%d')
-    filename = f"processed_stocks_{today_str}.csv"
-    df.to_csv(filename, index=False)
-    print(f"Dane zapisano do pliku: {filename}")
-
-    return df
+    try:
+        with open(model_path, 'rb') as f:
+            model = pickle.load(f)
+        return model
+    except FileNotFoundError:
+        print(f"Błąd: Nie znaleziono pliku modelu w ścieżce: {model_path}")
+        return None
+    except Exception as e:
+        print(f"Błąd podczas ładowania modelu: {e}")
+        return None
 
 
 def generate_predictions(model, X):
-    """Generuje przewidywane zwroty dla podanych danych wejściowych."""
-    return model.predict(X.drop(columns=['Ticker']))
+    # Lista oczekiwanych cech użytych podczas treningu
+    expected_features = ['RSI', 'MACD', 'MACD_signal', 'MACD_hist', 'SMA',
+                         'ROC_30', 'ROC_90', 'ROC_120', 'ROC_180']
+
+    # Jeśli kolumna 'Ticker' lub 'date' istnieje, usuń je
+    cols_to_drop = []
+    for col in ['Ticker', 'date']:
+        if col in X.columns:
+            cols_to_drop.append(col)
+    X_numeric = X.drop(columns=cols_to_drop, errors='ignore')
+
+    # Wybierz tylko oczekiwane cechy
+    X_final = X_numeric[expected_features]
+
+    return model.predict(X_final)
 
 
 def generate_recommendations(predictions, tickers, top_n=5):
@@ -59,46 +39,39 @@ def generate_recommendations(predictions, tickers, top_n=5):
         'Ticker': tickers,
         'Predicted_Return': predictions
     })
+    recommendations_sorted = recommendations.sort_values(by='Predicted_Return', ascending=False)
+    return recommendations_sorted.head(top_n)
 
-    # Sortujemy po najwyższych przewidywanych zwrotach
-    recommendations = recommendations.sort_values(by='Predicted_Return', ascending=False)
-
-    return recommendations.head(top_n)
-
-
-def main(model_path, csv_path, top_n=5):
-    """Główna funkcja generująca rekomendacje."""
-    # Wczytujemy model
+def main_recommendation_flow(model_path, csv_path, top_n=5):
+    """Główna funkcja generująca rekomendacje na podstawie modelu i danych z CSV."""
     model = load_model(model_path)
 
-    # Wczytujemy listę tickerów
-    tickers = load_tickers_from_csv(csv_path)
-
-    # Pobieramy dane dla dzisiejszego dnia
-    X = fetch_today_features(tickers)
-
-    if X.empty:
-        print("Brak danych do analizy.")
+    if model is None:
         return
 
-    # Generujemy przewidywane zwroty
-    predictions = generate_predictions(model, X)
+    try:
+        df = pd.read_csv(csv_path)
+    except FileNotFoundError:
+        print(f"Błąd: Nie znaleziono pliku CSV w ścieżce: {csv_path}")
+        return
+    except Exception as e:
+        print(f"Błąd podczas ładowania danych z CSV: {e}")
+        return
 
-    # Tworzymy rekomendacje
-    recommendations = generate_recommendations(predictions, X['Ticker'].tolist(), top_n)
+    if df.empty:
+        print("Brak danych w pliku CSV.")
+        return
+
+    # Usuwamy puste wiersze (jeśli takie istnieją)
+    df = df.dropna()
+
+    # Generowanie przewidywań
+    predictions = generate_predictions(model, df)
+
+    # Generowanie rekomendacji
+    recommendations = generate_recommendations(predictions, df['Ticker'].tolist(), top_n)
 
     print("\n===== Najlepsze rekomendacje =====")
     print(recommendations.to_string(index=False))
 
     return recommendations
-
-
-if __name__ == "__main__":
-    # Ścieżka do modelu
-    MODEL_PATH = "xgboost_model.pkl"
-
-    # Ścieżka do pliku CSV z tickerami
-    CSV_PATH = "processed_stocks_data.csv"
-
-    # Generowanie rekomendacji
-    recommendations = main(MODEL_PATH, CSV_PATH)
