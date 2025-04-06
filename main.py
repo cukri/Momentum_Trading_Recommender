@@ -16,6 +16,7 @@ def main():
     parser.add_argument("--csv_path", type=str, default="processed_stocks_data.csv", help="Path to processed CSV file")
     parser.add_argument("--tickers_file", type=str, default="tickers.txt", help="Path to the file containing tickers")
     parser.add_argument("--config", type=str, default="config.json", help="Path to the config file")
+    parser.add_argument("--target_horizon", type=int, default=30, help="Liczba dni do przodu dla obliczenia zwrotu (target)")
 
     args = parser.parse_args()
 

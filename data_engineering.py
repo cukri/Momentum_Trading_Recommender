@@ -46,6 +46,18 @@ def calculate_technical_indicators(df):
     df["ROC_120"] = ta.roc(df["close"], length=min_data_length_roc_120) if len(df) >= min_data_length_roc_120 else None
     df["ROC_180"] = ta.roc(df["close"], length=min_data_length_roc_180) if len(df) >= min_data_length_roc_180 else None
 
+    df = calculate_stochastic_oscillator(df)
+
+    return df
+
+def calculate_stochastic_oscillator(df, k_period=14, d_period=3):
+    df["low_min"] = df["Low"].rolling(window=k_period).min()
+    df["high_max"] = df["High"].rolling(window=k_period).max()
+
+    df["%K"] = 100 * ((df["Close"] - df["low_min"]) / (df["high_max"] - df["low_min"]))
+    df["%D"] = df["%K"].rolling(window=d_period).mean()
+
+    df.drop(columns=["low_min", "high_max"], inplace=True)
     return df
 
 
@@ -73,23 +85,21 @@ def normalize_features(df, feature_columns):
     return df
 
 
-def prepare_features(df):
+def prepare_features(df, target_horizon=30):
     """Przygotowuje dane do modelu: oblicza zwrot, wskaźniki techniczne, czyszczenie i normalizację."""
-    # Obliczenie wskaźników technicznych
     df = calculate_technical_indicators(df)
 
-    # Obliczenie zwrotu (na podstawie ceny zamknięcia)
-    df["return"] = df["close"].pct_change()
+    # Obliczenie zwrotu (np. za 30 dni)
+    df["return"] = df["close"].pct_change(periods=target_horizon).shift(-target_horizon)
 
-    # Czyszczenie danych i sprawdzenie braków
     df = clean_data(df)
     df = check_missing_values(df)
 
-    # Lista cech do normalizacji
     feature_columns = ['RSI', 'MACD', 'MACD_signal', 'MACD_hist', 'SMA',
                        'ROC_30', 'ROC_90', 'ROC_120', 'ROC_180']
     df = normalize_features(df, feature_columns)
     return df
+
 
 
 def save_data_to_csv(all_data, filename="processed_stocks_data.csv"):

@@ -87,6 +87,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\stocks_data_test_2.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>
