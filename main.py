@@ -10,7 +10,7 @@ def main():
     parser.add_argument("--end_date", type=str, help="End date (YYYY-MM-DD)")
     parser.add_argument("--tickers", nargs="+", help="List of tickers to fetch (space-separated)")
     parser.add_argument("--today", action="store_true", help="Fetch only today's data")
-    parser.add_argument("--skip-fetch", action="store_true", help="Skip data fetching and use existing CSV")
+    parser.add_argument("--skip_fetch", action="store_true", help="Skip data fetching and use existing CSV")
     parser.add_argument("--recommend", action="store_true", help="Generate recommendations")
     parser.add_argument("--csv_path", type=str, default="processed_stocks_data.csv", help="Path to processed CSV file")
 

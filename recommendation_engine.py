@@ -20,6 +20,12 @@ def generate_predictions(model, X):
     expected_features = ['RSI', 'MACD', 'MACD_signal', 'MACD_hist', 'SMA',
                          'ROC_30', 'ROC_90', 'ROC_120', 'ROC_180']
 
+    # Upewnij się, że kolumna 'Ticker' istnieje
+    if 'Ticker' not in X.columns:
+        raise ValueError("Brakuje kolumny 'Ticker' w danych wejściowych.")
+
+    tickers = X['Ticker'].copy()
+
     # Jeśli kolumna 'Ticker' lub 'date' istnieje, usuń je
     cols_to_drop = []
     for col in ['Ticker', 'date']:
@@ -30,17 +36,22 @@ def generate_predictions(model, X):
     # Wybierz tylko oczekiwane cechy
     X_final = X_numeric[expected_features]
 
-    return model.predict(X_final)
+    preds = model.predict(X_final)
 
-
-def generate_recommendations(predictions, tickers, top_n=5):
-    """Generuje rekomendacje na podstawie przewidywanych zwrotów."""
-    recommendations = pd.DataFrame({
+    # Stwórz tymczasowy DataFrame do grupowania
+    df_preds = pd.DataFrame({
         'Ticker': tickers,
-        'Predicted_Return': predictions
+        'Predicted_Return': preds
     })
-    recommendations_sorted = recommendations.sort_values(by='Predicted_Return', ascending=False)
-    return recommendations_sorted.head(top_n)
+
+    # Grupowanie po tickerze (średnia predykcja na spółkę)
+    grouped = df_preds.groupby('Ticker', as_index=False).mean()
+
+    return grouped  # Zwraca DataFrame z kolumnami: Ticker, Predicted_Return
+
+
+def generate_recommendations(predictions_df, top_n=5):
+    return predictions_df.sort_values(by="Predicted_Return", ascending=False).head(top_n)
 
 def main_recommendation_flow(model_path, csv_path, top_n=5):
     """Główna funkcja generująca rekomendacje na podstawie modelu i danych z CSV."""
@@ -69,7 +80,7 @@ def main_recommendation_flow(model_path, csv_path, top_n=5):
     predictions = generate_predictions(model, df)
 
     # Generowanie rekomendacji
-    recommendations = generate_recommendations(predictions, df['Ticker'].tolist(), top_n)
+    recommendations = generate_recommendations(predictions, top_n)
 
     print("\n===== Najlepsze rekomendacje =====")
     print(recommendations.to_string(index=False))

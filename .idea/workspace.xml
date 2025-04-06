@@ -155,7 +155,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743462065233</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Version with empty table returned as recommendations.">
+      <option name="closed" value="true" />
+      <created>1743793202996</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1743793202996</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -175,6 +183,7 @@
     <MESSAGE value="New not working models right now with recommednation engine." />
     <MESSAGE value="Working on recommendation." />
     <MESSAGE value="First version with main." />
-    <option name="LAST_COMMIT_MESSAGE" value="First version with main." />
+    <MESSAGE value="Version with empty table returned as recommendations." />
+    <option name="LAST_COMMIT_MESSAGE" value="Version with empty table returned as recommendations." />
   </component>
 </project>
