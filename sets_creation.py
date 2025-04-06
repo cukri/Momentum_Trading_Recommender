@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from feature_engineering import prepare_features
+from data_engineering import prepare_features
 
 def create_train_test_sets(file_path="stocks_data.csv", test_size=0.2, random_state=42):
     """Wczytuje dane, przygotowuje cechy i dzieli na zbiory treningowe i testowe."""

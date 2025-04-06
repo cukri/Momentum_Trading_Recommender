@@ -1,17 +1,24 @@
 import requests
 import pandas as pd
-import pandas_ta as ta
 import datetime
+import json
+import os
 
-API_KEY = "oIlfUS3C0X2DGhm3Lh0CA71GqWbmnMSc"
-BASE_URL = "https://financialmodelingprep.com/api/v3/historical-price-full/"
+def load_config(config_path="config.json"):
+    if not os.path.exists(config_path):
+        raise FileNotFoundError(f"Brak pliku konfiguracyjnego: {config_path}")
+    with open(config_path, "r") as f:
+        config = json.load(f)
+    return config
 
+config = load_config()  # Wczytanie ustawień z config.json
+API_KEY = config.get("API_KEY")
+BASE_URL = config.get("BASE_URL")
 
 def get_nasdaq_tickers():
     """Downloading list of tickers from NASDAQ"""
     url = "https://financialmodelingprep.com/api/v3/stock/list?apikey=" + API_KEY
     response = requests.get(url)
-
     if response.status_code == 200:
         data = response.json()
         nasdaq_tickers = [stock["symbol"] for stock in data if stock["exchange"] == "NASDAQ"]
@@ -20,12 +27,10 @@ def get_nasdaq_tickers():
         print(f"Error during downloading tickers NASDAQ: {response.status_code}")
         return []
 
-
 def get_sp500_tickers():
     """Downloading list of tickers from S&P 500"""
     url = "https://financialmodelingprep.com/api/v3/sp500_constituent?apikey=" + API_KEY
     response = requests.get(url)
-
     if response.status_code == 200:
         data = response.json()
         sp500_tickers = [stock["symbol"] for stock in data]
@@ -34,25 +39,21 @@ def get_sp500_tickers():
         print(f"Error during downloading tickers S&P 500: {response.status_code}")
         return []
 
-
 def get_all_tickers():
     """Combining tickers from NASDAQ and S&P 500"""
     nasdaq_tickers = get_nasdaq_tickers()
     sp500_tickers = get_sp500_tickers()
-
     all_tickers = list(set(nasdaq_tickers + sp500_tickers))  # Usuwa duplikaty
     return all_tickers
-
 
 def get_fmp_data(ticker, start=None, end=None):
     """Downloading stock data from FinancialModelingPrep."""
     if start is None or end is None:
-        today = datetime.today().strftime('%Y-%m-%d')
+        today = datetime.datetime.today().strftime('%Y-%m-%d')
         start = end = today  # Pobieranie danych tylko z dzisiaj
 
     url = f"{BASE_URL}{ticker}?from={start}&to={end}&apikey={API_KEY}"
     response = requests.get(url)
-
     if response.status_code == 200:
         data = response.json()
         if "historical" in data and data["historical"]:
@@ -68,104 +69,12 @@ def get_fmp_data(ticker, start=None, end=None):
         print(f"Error downloading data for {ticker}: {response.status_code}")
         return None
 
-def calculate_technical_indicators(df):
-    # Minimum data lengths for each indicator
-    min_data_length_rsi = 14
-    min_data_length_macd = 26
-    min_data_length_sma = 30
-    min_data_length_roc_30 = 30
-    min_data_length_roc_90 = 90
-    min_data_length_roc_120 = 120
-    min_data_length_roc_180 = 180
-
-    # Checking the data length for each indicator
-    if len(df) < min_data_length_rsi:
-        print(f"Insufficient data to calculate RSI, only {len(df)} days available.")
-        df['RSI'] = None
-    else:
-        df['RSI'] = ta.rsi(df['close'], length=min_data_length_rsi)
-
-    if len(df) < min_data_length_macd:
-        print(f"Insufficient data to calculate MACD, only {len(df)} days available.")
-        df['MACD'] = None
-        df['MACD_signal'] = None
-        df['MACD_hist'] = None
-    else:
-        macd = ta.macd(df['close'])
-        df['MACD'] = macd['MACD_12_26_9'] if 'MACD_12_26_9' in macd.columns else None
-        df['MACD_signal'] = macd['MACDs_12_26_9'] if 'MACDs_12_26_9' in macd.columns else None
-        df['MACD_hist'] = macd['MACDh_12_26_9'] if 'MACDh_12_26_9' in macd.columns else None
-
-    if len(df) < min_data_length_sma:
-        print(f"Insufficient data to calculate SMA, only {len(df)} days available.")
-        df['SMA'] = None
-    else:
-        df['SMA'] = ta.sma(df['close'], length=min_data_length_sma)
-
-    # ROC for every period
-    if len(df) < min_data_length_roc_30:
-        df["ROC_30"] = None
-    else:
-        df["ROC_30"] = ta.roc(df["close"], length=min_data_length_roc_30)
-
-    if len(df) < min_data_length_roc_90:
-        df["ROC_90"] = None
-    else:
-        df["ROC_90"] = ta.roc(df["close"], length=min_data_length_roc_90)
-
-    if len(df) < min_data_length_roc_120:
-        df["ROC_120"] = None
-    else:
-        df["ROC_120"] = ta.roc(df["close"], length=min_data_length_roc_120)
-
-    if len(df) < min_data_length_roc_180:
-        df["ROC_180"] = None
-    else:
-        df["ROC_180"] = ta.roc(df["close"], length=min_data_length_roc_180)
-
-    return df
-
-
-def save_data_to_csv(all_data, filename="stocks_data_for_test.csv"):
-    """Saves collected data to a CSV file."""
-    if all_data:
-        combined_df = pd.concat(all_data)
-        combined_df.sort_values(by="date", inplace = True)
-        combined_df.to_csv(filename, index=False)
-        print(f"Data saved to {filename}")
-    else:
-        print("No data to save.")
-
-
-def run_data_collection():
-    tickers = input("Enter tickers separated by commas (or leave empty for default NASDAQ & S&P 500 list): ").strip()
-    tickers = tickers.split(',') if tickers else get_all_tickers()
-
-    date_choice = input("Do you want data only from today? (Y/N): ").strip().upper()
-    if date_choice == 'Y':
-        start_date = end_date = None  # Pobieranie dzisiejszych danych
-    else:
-        start_date = input("Enter start date (YYYY-MM-DD): ").strip()
-        end_date = input("Enter end date (YYYY-MM-DD): ").strip()
-
-    all_data = []
-    for ticker in tickers:
-        print(f"Getting data for {ticker}...")
-        df = get_fmp_data(ticker, start=start_date, end=end_date)
-        if df is not None:
-            df = calculate_technical_indicators(df)
-            all_data.append(df)
-            print(f"Metrics for {ticker} downloaded and calculated.")
-        else:
-            print(f"No data for {ticker}.")
-        print("-")
-
-    if all_data:
-        save_data_to_csv(all_data)
-    else:
-        print("No data to save.")
-
-
-if __name__ == "__main__":
-    run_data_collection()
-
+def load_tickers(ticker_file="tickers.txt"):
+    """Wczytuje listę tickerów z pliku tekstowego."""
+    try:
+        with open(ticker_file, "r") as f:
+            tickers = [line.strip() for line in f if line.strip()]
+        return tickers
+    except Exception as e:
+        print(f"Błąd wczytywania tickerów: {e}")
+        return []
