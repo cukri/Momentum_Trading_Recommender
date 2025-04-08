@@ -46,7 +46,7 @@ def calculate_technical_indicators(df):
     df["ROC_120"] = ta.roc(df["close"], length=min_data_length_roc_120) if len(df) >= min_data_length_roc_120 else None
     df["ROC_180"] = ta.roc(df["close"], length=min_data_length_roc_180) if len(df) >= min_data_length_roc_180 else None
 
-    df = calculate_stochastic_oscillator(df)
+    #df = calculate_stochastic_oscillator(df)
 
     return df
 

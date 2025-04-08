@@ -53,13 +53,19 @@ def generate_predictions(model, X):
 def generate_recommendations(predictions_df, top_n=5):
     return predictions_df.sort_values(by="Predicted_Return", ascending=False).head(top_n)
 
-def main_recommendation_flow(model_path, csv_path, top_n=5):
+def main_recommendation_flow(model_path, csv_path, target_horizon=30, top_n=5):
     """Główna funkcja generująca rekomendacje na podstawie modelu i danych z CSV."""
-    model = load_model(model_path)
+    import pandas as pd
+    from data_engineering import prepare_features
+    from recommendation_engine import load_model, generate_predictions, generate_recommendations
 
+    print(f"\n🔄 Generowanie rekomendacji dla horyzontu {target_horizon} dni...")
+
+    model = load_model(model_path)
     if model is None:
         return
 
+    # Wczytaj dane
     try:
         df = pd.read_csv(csv_path)
     except FileNotFoundError:
@@ -73,7 +79,10 @@ def main_recommendation_flow(model_path, csv_path, top_n=5):
         print("Brak danych w pliku CSV.")
         return
 
-    # Usuwamy puste wiersze (jeśli takie istnieją)
+    # Przygotuj cechy techniczne z uwzględnieniem target_horizon
+    df = prepare_features(df, target_horizon=target_horizon)
+
+    # Usuń brakujące wartości
     df = df.dropna()
 
     # Generowanie przewidywań
@@ -82,7 +91,8 @@ def main_recommendation_flow(model_path, csv_path, top_n=5):
     # Generowanie rekomendacji
     recommendations = generate_recommendations(predictions, top_n)
 
-    print("\n===== Najlepsze rekomendacje =====")
+    print("\n✅ ===== Najlepsze rekomendacje =====")
     print(recommendations.to_string(index=False))
 
     return recommendations
+

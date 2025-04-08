@@ -5,11 +5,12 @@ from data_engineering import prepare_features
 def create_train_test_sets(file_path="stocks_data.csv", test_size=0.2, random_state=42, target_horizon=30):
     """Wczytuje dane, przygotowuje cechy i dzieli na zbiory treningowe i testowe."""
     df = pd.read_csv(file_path)
-
     df_prepared = prepare_features(df, target_horizon=target_horizon)
 
-    X = df_prepared[["RSI", "MACD", "MACD_signal", "MACD_hist", "SMA", "ROC_30", "ROC_90", "ROC_120", "ROC_180"]]
+    feature_cols = ["RSI", "MACD", "MACD_signal", "MACD_hist", "SMA",
+                    "ROC_30", "ROC_90", "ROC_120", "ROC_180"]
+
+    X = df_prepared[feature_cols]
     y = df_prepared["return"]
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
-    return X_train, X_test, y_train, y_test
+    return train_test_split(X, y, test_size=test_size, random_state=random_state)

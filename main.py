@@ -31,7 +31,6 @@ def main():
         else:
             tickers = load_tickers(args.tickers_file)
             if not tickers:
-                # Jeśli plik nie zawiera tickerów, możesz użyć domyślnej listy z API
                 tickers = get_all_tickers()
 
         all_data = []
@@ -55,7 +54,8 @@ def main():
     if args.recommend:
         main_recommendation_flow(
             model_path=args.model_path,
-            csv_path=args.csv_path
+            csv_path=args.csv_path,
+            target_horizon=args.target_horizon
         )
 
 if __name__ == "__main__":

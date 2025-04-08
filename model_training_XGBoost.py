@@ -1,16 +1,23 @@
+import pandas as pd
 import pickle
 import xgboost as xgb
 from sets_creation import create_train_test_sets
 
-# Wczytanie danych i podział na zbiory treningowe i testowe
-X_train, X_test, y_train, y_test = create_train_test_sets()
+def train_and_save_model(target_horizon):
+    """Trenuje model XGBoost dla danego target_horizon i zapisuje do pliku."""
+    print(f"\n🔄 Training model for target_horizon = {target_horizon} days...")
+    X_train, X_test, y_train, y_test = create_train_test_sets(target_horizon=target_horizon)
 
-# Tworzenie i trenowanie modelu XGBoost
-xgboost_model = xgb.XGBRegressor()
-xgboost_model.fit(X_train, y_train)
+    model = xgb.XGBRegressor()
+    model.fit(X_train, y_train)
 
-# Zapisanie modelu
-with open("xgboost_model.pkl", "wb") as f:
-    pickle.dump(xgboost_model, f)
+    model_filename = f"xgboost_model_{target_horizon}.pkl"
+    with open(model_filename, "wb") as f:
+        pickle.dump(model, f)
 
-print("XGBoost model trained and saved.")
+    print(f"✅ Model saved to: {model_filename}")
+
+
+if __name__ == "__main__":
+    for horizon in [1, 30]:
+        train_and_save_model(target_horizon=horizon)
