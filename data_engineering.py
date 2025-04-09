@@ -4,8 +4,11 @@ from sklearn.preprocessing import MinMaxScaler
 
 
 def calculate_technical_indicators(df):
-    """Oblicza wskaźniki techniczne dla danych."""
+    """Oblicza wskaźniki techniczne dla danych zgodnie z dostępnością danych historycznych."""
     # Minimalne długości danych dla wskaźników
+
+    df = df.sort_values(by='date', ascending=True)
+
     min_data_length_rsi = 14
     min_data_length_macd = 26
     min_data_length_sma = 30
@@ -34,7 +37,7 @@ def calculate_technical_indicators(df):
         df['MACD_hist'] = macd['MACDh_12_26_9'] if 'MACDh_12_26_9' in macd.columns else None
 
     # SMA
-    if len(df) < min_data_length_sma:
+    if len(df) >= min_data_length_sma:
         print(f"Insufficient data to calculate SMA, only {len(df)} days available.")
         df['SMA'] = None
     else:
@@ -46,26 +49,33 @@ def calculate_technical_indicators(df):
     df["ROC_120"] = ta.roc(df["close"], length=min_data_length_roc_120) if len(df) >= min_data_length_roc_120 else None
     df["ROC_180"] = ta.roc(df["close"], length=min_data_length_roc_180) if len(df) >= min_data_length_roc_180 else None
 
-    #df = calculate_stochastic_oscillator(df)
+    # Obliczenie wskaźnika Stochastic Oscillator
+    df = calculate_stochastic_oscillator(df)
 
     return df
 
 def calculate_stochastic_oscillator(df, k_period=14, d_period=3):
-    df["low_min"] = df["Low"].rolling(window=k_period).min()
-    df["high_max"] = df["High"].rolling(window=k_period).max()
+    """Oblicza wskaźnik Stochastic Oscillator (SO)"""
+    df["low_min"] = df["low"].rolling(window=k_period).min()
+    df["high_max"] = df["high"].rolling(window=k_period).max()
 
-    df["%K"] = 100 * ((df["Close"] - df["low_min"]) / (df["high_max"] - df["low_min"]))
-    df["%D"] = df["%K"].rolling(window=d_period).mean()
+    df["Stochastic"] = 100 * ((df["close"] - df["low_min"]) / (df["high_max"] - df["low_min"]))  # %K
+    df["%D"] = df["Stochastic"].rolling(window=d_period).mean()
 
     df.drop(columns=["low_min", "high_max"], inplace=True)
     return df
 
 
 def clean_data(df):
-    """Usuwa brakujące wartości."""
-    df = df.dropna()
-    return df
+    """Usuwa brakujące wartości i loguje usuwanie danych."""
+    print(f"Before cleaning: {df.shape[0]} rows and {df.shape[1]} columns")
+    missing_data = df.isnull().sum()
+    print(f"Missing data per column:\n{missing_data[missing_data > 0]}")
 
+    df_cleaned = df.dropna()  # Usuwanie brakujących danych
+    print(f"After cleaning: {df_cleaned.shape[0]} rows and {df_cleaned.shape[1]} columns")
+
+    return df_cleaned
 
 def check_missing_values(df):
     """Wyświetla kolumny z brakującymi danymi."""
@@ -89,32 +99,32 @@ def prepare_features(df, target_horizon=30):
     """Przygotowuje dane do modelu: oblicza zwrot, wskaźniki techniczne, czyszczenie i normalizację."""
     df = calculate_technical_indicators(df)
 
+    print(f"Data before cleaning: {len(df)} rows")
+
     # Obliczenie zwrotu (np. za 30 dni)
     df["return"] = df["close"].pct_change(periods=target_horizon).shift(-target_horizon)
 
-    df = clean_data(df)
-    df = check_missing_values(df)
+    df = clean_data(df)  # Usuwanie brakujących wartości
+    print(f"Data after cleaning: {len(df)} rows")
+
+    df = check_missing_values(df)  # Sprawdzanie brakujących danych
 
     feature_columns = ['RSI', 'MACD', 'MACD_signal', 'MACD_hist', 'SMA',
                        'ROC_30', 'ROC_90', 'ROC_120', 'ROC_180']
-    df = normalize_features(df, feature_columns)
+    df = normalize_features(df, feature_columns)  # Normalizacja cech
     return df
-
 
 
 def save_data_to_csv(all_data, filename="processed_stocks_data.csv"):
     """Łączy dane (listę DataFrame lub pojedynczy DataFrame), sortuje je i zapisuje do pliku CSV."""
-    import pandas as pd
-
     if isinstance(all_data, list):
         combined_df = pd.concat(all_data)
     else:
         combined_df = all_data
 
-    combined_df.sort_values(by="date", inplace=True)
+    combined_df.sort_values(by="date", ascending=True, inplace=True)
     combined_df.to_csv(filename, index=False)
     print(f"Data saved to {filename}")
-
 
 
 def run_data_engineering(all_data):

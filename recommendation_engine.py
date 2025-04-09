@@ -1,5 +1,6 @@
 import pandas as pd
 import pickle
+from data_engineering import prepare_features
 
 def load_model(model_path):
     """Wczytuje zapisany model ML z pliku."""
@@ -16,56 +17,67 @@ def load_model(model_path):
 
 
 def generate_predictions(model, X):
-    # Lista oczekiwanych cech użytych podczas treningu
+    # Lista wymaganych cech
     expected_features = ['RSI', 'MACD', 'MACD_signal', 'MACD_hist', 'SMA',
                          'ROC_30', 'ROC_90', 'ROC_120', 'ROC_180']
 
-    # Upewnij się, że kolumna 'Ticker' istnieje
     if 'Ticker' not in X.columns:
         raise ValueError("Brakuje kolumny 'Ticker' w danych wejściowych.")
 
-    tickers = X['Ticker'].copy()
+    # Zabezpieczenie - kopiujemy Ticker
+    tickers = X['Ticker'].copy().reset_index(drop=True)
 
-    # Jeśli kolumna 'Ticker' lub 'date' istnieje, usuń je
-    cols_to_drop = []
-    for col in ['Ticker', 'date']:
-        if col in X.columns:
-            cols_to_drop.append(col)
+    # Usuwamy zbędne kolumny
+    cols_to_drop = [col for col in ['Ticker', 'date'] if col in X.columns]
     X_numeric = X.drop(columns=cols_to_drop, errors='ignore')
 
-    # Wybierz tylko oczekiwane cechy
-    X_final = X_numeric[expected_features]
+    # Upewniamy się, że tylko oczekiwane cechy są brane do predykcji
+    X_final = X_numeric[expected_features].copy()
 
+    # Reset indeksów
+    X_final = X_final.reset_index(drop=True)
+
+    # Predykcja
     preds = model.predict(X_final)
 
-    # Stwórz tymczasowy DataFrame do grupowania
+    # Zaokrąglenie do 4 miejsc i przeliczenie na %
+    preds = np.round(preds * 100, 2)
+
+    # Zbudowanie DataFrame
     df_preds = pd.DataFrame({
         'Ticker': tickers,
         'Predicted_Return': preds
     })
 
-    # Grupowanie po tickerze (średnia predykcja na spółkę)
+    # Średnia predykcja per ticker (na wypadek duplikatów)
     grouped = df_preds.groupby('Ticker', as_index=False).mean()
 
-    return grouped  # Zwraca DataFrame z kolumnami: Ticker, Predicted_Return
+    return grouped
 
 
-def generate_recommendations(predictions_df, top_n=5):
-    return predictions_df.sort_values(by="Predicted_Return", ascending=False).head(top_n)
 
-def main_recommendation_flow(model_path, csv_path, target_horizon=30, top_n=5):
-    """Główna funkcja generująca rekomendacje na podstawie modelu i danych z CSV."""
-    import pandas as pd
-    from data_engineering import prepare_features
-    from recommendation_engine import load_model, generate_predictions, generate_recommendations
 
-    print(f"\n🔄 Generowanie rekomendacji dla horyzontu {target_horizon} dni...")
+def generate_recommendations(df, top_n=10):
+    df = df.copy()
 
+    # Określenie sygnału na podstawie oscylatora Stochastic
+    df['Signal'] = df['Stochastic'].apply(
+        lambda x: 'Buy' if x < 20 else ('Sell' if x > 80 else 'Hold')
+    )
+
+    # Posortuj po najwyższych prognozowanych zwrotach
+    df_sorted = df.sort_values(by='Predicted_Return', ascending=False)
+
+    # Wybierz top N
+    return df_sorted[['Ticker', 'Predicted_Return', 'Stochastic', 'Signal']].head(top_n)
+
+
+
+def main_recommendation_flow(model_path, csv_path, target_horizon, top_n=10):
     model = load_model(model_path)
     if model is None:
         return
 
-    # Wczytaj dane
     try:
         df = pd.read_csv(csv_path)
     except FileNotFoundError:
@@ -79,7 +91,7 @@ def main_recommendation_flow(model_path, csv_path, target_horizon=30, top_n=5):
         print("Brak danych w pliku CSV.")
         return
 
-    # Przygotuj cechy techniczne z uwzględnieniem target_horizon
+        # Przygotuj cechy techniczne z uwzględnieniem target_horizon
     df = prepare_features(df, target_horizon=target_horizon)
 
     # Usuń brakujące wartości
