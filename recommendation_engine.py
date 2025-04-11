@@ -1,7 +1,7 @@
 import pandas as pd
 import pickle
 from data_engineering import prepare_features
-
+import numpy as np
 def load_model(model_path):
     """Wczytuje zapisany model ML z pliku."""
     try:
@@ -27,6 +27,9 @@ def generate_predictions(model, X):
     # Zabezpieczenie - kopiujemy Ticker
     tickers = X['Ticker'].copy().reset_index(drop=True)
 
+    stochastic = X['Stochastic'].copy().reset_index(drop=True) if 'Stochastic' in X.columns else pd.Series(
+        [np.nan] * len(X))
+
     # Usuwamy zbędne kolumny
     cols_to_drop = [col for col in ['Ticker', 'date'] if col in X.columns]
     X_numeric = X.drop(columns=cols_to_drop, errors='ignore')
@@ -40,13 +43,14 @@ def generate_predictions(model, X):
     # Predykcja
     preds = model.predict(X_final)
 
-    # Zaokrąglenie do 4 miejsc i przeliczenie na %
+    # Zaokrąglenie do 2 miejsc po przecinku i formatowanie w procenty
     preds = np.round(preds * 100, 2)
 
     # Zbudowanie DataFrame
     df_preds = pd.DataFrame({
         'Ticker': tickers,
-        'Predicted_Return': preds
+        'Predicted_Return': preds,
+        'Stochastic': stochastic
     })
 
     # Średnia predykcja per ticker (na wypadek duplikatów)

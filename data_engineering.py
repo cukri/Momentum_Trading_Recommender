@@ -37,7 +37,7 @@ def calculate_technical_indicators(df):
         df['MACD_hist'] = macd['MACDh_12_26_9'] if 'MACDh_12_26_9' in macd.columns else None
 
     # SMA
-    if len(df) >= min_data_length_sma:
+    if len(df) < min_data_length_sma:
         print(f"Insufficient data to calculate SMA, only {len(df)} days available.")
         df['SMA'] = None
     else:
@@ -67,15 +67,15 @@ def calculate_stochastic_oscillator(df, k_period=14, d_period=3):
 
 
 def clean_data(df):
-    """Usuwa brakujące wartości i loguje usuwanie danych."""
-    print(f"Before cleaning: {df.shape[0]} rows and {df.shape[1]} columns")
-    missing_data = df.isnull().sum()
-    print(f"Missing data per column:\n{missing_data[missing_data > 0]}")
 
-    df_cleaned = df.dropna()  # Usuwanie brakujących danych
-    print(f"After cleaning: {df_cleaned.shape[0]} rows and {df_cleaned.shape[1]} columns")
+    # Usuń kolumny, które w całości są puste
+    df = df.dropna(axis=1, how='all')
 
-    return df_cleaned
+    # Usuń tylko te wiersze, które mają NaN w pozostałych kolumnach
+    df = df.dropna()
+
+    return df
+
 
 def check_missing_values(df):
     """Wyświetla kolumny z brakującymi danymi."""

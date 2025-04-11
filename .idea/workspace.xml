@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e4f4a455-559c-4b95-b8e9-94ee53a45fa6" name="Changes" comment="Here we go again. Working on better recommendations, implementing option for working with different time horizons and other indicators">
+    <list default="true" id="e4f4a455-559c-4b95-b8e9-94ee53a45fa6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_engineering.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_engineering.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendation_engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation_engine.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,7 +185,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743960951365</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="NOT WORKING AFTER ADDING A STOCHASTIC INDICATOR">
+      <option name="closed" value="true" />
+      <created>1744235693323</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1744235693323</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -208,6 +217,7 @@
     <MESSAGE value="FIRST VERSION WITH END TO END PROCESS WORKING!!!!" />
     <MESSAGE value="Version with change of structure" />
     <MESSAGE value="Here we go again. Working on better recommendations, implementing option for working with different time horizons and other indicators" />
-    <option name="LAST_COMMIT_MESSAGE" value="Here we go again. Working on better recommendations, implementing option for working with different time horizons and other indicators" />
+    <MESSAGE value="NOT WORKING AFTER ADDING A STOCHASTIC INDICATOR" />
+    <option name="LAST_COMMIT_MESSAGE" value="NOT WORKING AFTER ADDING A STOCHASTIC INDICATOR" />
   </component>
 </project>

@@ -10,13 +10,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\data_with_stoch_test.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\dath_test.csv">
           <value>
             <Attribute>
