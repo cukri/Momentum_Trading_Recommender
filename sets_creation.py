@@ -3,7 +3,7 @@ from sklearn.model_selection import train_test_split
 from data_engineering import prepare_features
 
 def create_train_test_sets(file_path="stocks_data.csv", test_size=0.2, random_state=42, target_horizon=30):
-    """Wczytuje dane, przygotowuje cechy i dzieli na zbiory treningowe i testowe."""
+    """."""
     df = pd.read_csv(file_path)
     df_prepared = prepare_features(df, target_horizon=target_horizon)
 

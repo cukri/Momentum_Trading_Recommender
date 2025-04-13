@@ -4,8 +4,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 
 def calculate_technical_indicators(df):
-    """Oblicza wskaźniki techniczne dla danych zgodnie z dostępnością danych historycznych."""
-    # Minimalne długości danych dla wskaźników
+    """Calculates technical indicators for data according to historical data availability."""
 
     df = df.sort_values(by='date', ascending=True)
 
@@ -68,17 +67,17 @@ def calculate_stochastic_oscillator(df, k_period=14, d_period=3):
 
 def clean_data(df):
 
-    # Usuń kolumny, które w całości są puste
+    # Remove columns that are completely empty
     df = df.dropna(axis=1, how='all')
 
-    # Usuń tylko te wiersze, które mają NaN w pozostałych kolumnach
+    # Remove only those rows that have NaN in the remaining columns
     df = df.dropna()
 
     return df
 
 
 def check_missing_values(df):
-    """Wyświetla kolumny z brakującymi danymi."""
+    """Displays columns with missing data."""
     missing_data = df.isnull().sum()
     if missing_data.any():
         print("Missing values found in the following columns:")
@@ -89,34 +88,34 @@ def check_missing_values(df):
 
 
 def normalize_features(df, feature_columns):
-    """Normalizacja wybranych cech za pomocą MinMaxScaler."""
+    """Normalization of selected features using MinMaxScaler."""
     scaler = MinMaxScaler()
     df.loc[:, feature_columns] = scaler.fit_transform(df[feature_columns])
     return df
 
 
 def prepare_features(df, target_horizon=30):
-    """Przygotowuje dane do modelu: oblicza zwrot, wskaźniki techniczne, czyszczenie i normalizację."""
+    """Prepares data for the model: calculates return, technical indicators, cleansing and normalization."""
     df = calculate_technical_indicators(df)
 
     print(f"Data before cleaning: {len(df)} rows")
 
-    # Obliczenie zwrotu (np. za 30 dni)
+    #Calculation of refund (e.g. in 30 days)
     df["return"] = df["close"].pct_change(periods=target_horizon).shift(-target_horizon)
 
-    df = clean_data(df)  # Usuwanie brakujących wartości
+    df = clean_data(df)
     print(f"Data after cleaning: {len(df)} rows")
 
-    df = check_missing_values(df)  # Sprawdzanie brakujących danych
+    df = check_missing_values(df)  # Checking for missing data
 
     feature_columns = ['RSI', 'MACD', 'MACD_signal', 'MACD_hist', 'SMA',
                        'ROC_30', 'ROC_90', 'ROC_120', 'ROC_180']
-    df = normalize_features(df, feature_columns)  # Normalizacja cech
+    df = normalize_features(df, feature_columns)
     return df
 
 
 def save_data_to_csv(all_data, filename="processed_stocks_data.csv"):
-    """Łączy dane (listę DataFrame lub pojedynczy DataFrame), sortuje je i zapisuje do pliku CSV."""
+    """Combines data (a list of DataFrames or a single DataFrame), sorts it and saves it to a CSV file."""
     if isinstance(all_data, list):
         combined_df = pd.concat(all_data)
     else:
@@ -128,7 +127,7 @@ def save_data_to_csv(all_data, filename="processed_stocks_data.csv"):
 
 
 def run_data_engineering(all_data):
-    """Łączy listę DataFrame, przetwarza dane i zapisuje wynik do pliku CSV."""
+    """Concatenates a list of DataFrames, processes the data, and writes the result to a CSV file."""
     if not all_data:
         print("No data to process.")
         return
@@ -137,9 +136,3 @@ def run_data_engineering(all_data):
     save_data_to_csv(processed_df)
     return processed_df
 
-
-if __name__ == "__main__":
-    # Przykładowe wywołanie – zakładając, że dane zostały wcześniej pobrane i zapisane w pliku CSV
-    df = pd.read_csv("stocks_data_for_test.csv")
-    processed_df = prepare_features(df)
-    save_data_to_csv(processed_df)

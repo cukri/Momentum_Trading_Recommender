@@ -4,8 +4,8 @@ import xgboost as xgb
 from sets_creation import create_train_test_sets
 
 def train_and_save_model(target_horizon):
-    """Trenuje model XGBoost dla danego target_horizon i zapisuje do pliku."""
-    print(f"\n🔄 Training model for target_horizon = {target_horizon} days...")
+    """Trains an XGBoost model for a given target_horizon and saves it to a file."""
+    print(f"\nTraining model for target_horizon = {target_horizon} days...")
     X_train, X_test, y_train, y_test = create_train_test_sets(target_horizon=target_horizon)
 
     model = xgb.XGBRegressor()

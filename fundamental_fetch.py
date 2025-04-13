@@ -1,7 +1,6 @@
 import requests
 import pandas as pd
 
-API_KEY = "oIlfUS3C0X2DGhm3Lh0CA71GqWbmnMSc"
 BASE_URL = "https://financialmodelingprep.com/api/v3/profile/"  # Endpoint do profili firm
 
 

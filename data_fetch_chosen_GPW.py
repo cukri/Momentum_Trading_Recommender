@@ -8,9 +8,6 @@ def get_gpw_tickers():
     return ["XTB.WA", "KRU.WA", "DCR.WA", "CDR.WA", "ARP.WA", "ACP.WA", "ASE.WA", "COG.WA"]
 
 
-import pandas as pd
-import yfinance as yf
-
 def get_stock_data(tickers, start="2020-01-01", end="2025-01-01"):
     """Pobiera dane giełdowe i zapisuje je do jednego DataFrame, bez append/concat."""
 

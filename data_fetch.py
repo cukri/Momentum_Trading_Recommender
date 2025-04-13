@@ -6,7 +6,7 @@ import os
 
 def load_config(config_path="config.json"):
     if not os.path.exists(config_path):
-        raise FileNotFoundError(f"Brak pliku konfiguracyjnego: {config_path}")
+        raise FileNotFoundError(f"No configuration file: {config_path}")
     with open(config_path, "r") as f:
         config = json.load(f)
     return config
@@ -43,14 +43,14 @@ def get_all_tickers():
     """Combining tickers from NASDAQ and S&P 500"""
     nasdaq_tickers = get_nasdaq_tickers()
     sp500_tickers = get_sp500_tickers()
-    all_tickers = list(set(nasdaq_tickers + sp500_tickers))  # Usuwa duplikaty
+    all_tickers = list(set(nasdaq_tickers + sp500_tickers))  #Removing duplicates
     return all_tickers
 
 def get_fmp_data(ticker, start=None, end=None):
     """Downloading stock data from FinancialModelingPrep."""
     if start is None or end is None:
         today = datetime.datetime.today().strftime('%Y-%m-%d')
-        start = end = today  # Pobieranie danych tylko z dzisiaj
+        start = end = today  # Downloading data from today only
 
     url = f"{BASE_URL}{ticker}?from={start}&to={end}&apikey={API_KEY}"
     response = requests.get(url)
@@ -70,11 +70,11 @@ def get_fmp_data(ticker, start=None, end=None):
         return None
 
 def load_tickers(ticker_file="tickers.txt"):
-    """Wczytuje listę tickerów z pliku tekstowego."""
+    """Loading list of tickers from file."""
     try:
         with open(ticker_file, "r") as f:
             tickers = [line.strip() for line in f if line.strip()]
         return tickers
     except Exception as e:
-        print(f"Błąd wczytywania tickerów: {e}")
+        print(f"Error loading tickers: {e}")
         return []
